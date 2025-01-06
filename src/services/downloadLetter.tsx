@@ -1,7 +1,7 @@
 import React from "react";
 import { jsPDF } from "jspdf";
 
-// Define the interface for the props
+
 interface LetterContent {
   name: string;
   email: string;
@@ -10,9 +10,10 @@ interface LetterContent {
   companyName: string;
   hiringManager: string;
   letterDetails: string;
+  disabled: boolean;
 }
 
-// Correctly destructure the props
+
 const DownloadLetter: React.FC<LetterContent> = ({
   name,
   email,
@@ -21,13 +22,14 @@ const DownloadLetter: React.FC<LetterContent> = ({
   companyName,
   hiringManager,
   letterDetails,
+  disabled,
 }) => {
   const handleDownload = () => {
     const doc = new jsPDF();
 
     doc.setFont("times", "normal");
 
-    // Define layout settings
+    // Definition layout settings
     const marginLeft = 25;
     const marginTop = 30;
     const lineHeight = 8; 
@@ -82,7 +84,8 @@ const DownloadLetter: React.FC<LetterContent> = ({
   return (
     <button
       onClick={handleDownload}
-      className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl focus:outline-none"
+      disabled={disabled}
+      className={`bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl focus:outline-none fixed bottom-4 right-4 z-40  ${disabled ? "opacity-50 cursor-not-allowed": ""} `}
     >
       Download PDF
     </button>

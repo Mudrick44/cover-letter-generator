@@ -10,9 +10,24 @@ const JobDescription: React.FC = () => {
   const [companyName, setCompanyName] = useState<string>("");
   const [hiringManager, setHiringManager] = useState<string>("");
   const [letterDetails, setLetterDetails] = useState<string>("");
+  const [preview, setPreview] = useState<boolean>(false);
+  const togglepreview = ()=>{
+    setPreview(!preview);
+  }
+
+  const allFormFilled =
+    name.trim() &&
+    jobTitle.trim() &&
+    email.trim() &&
+    address.trim() &&
+    phone.trim() &&
+    companyName.trim() &&
+    hiringManager.trim() &&
+    letterDetails.trim();
 
   return (
     <div className="flex flex-col lg:flex-row h-full min-h-screen bg-gray-200">
+      
       {/* Form Section */}
       <div className="flex-1 bg-white shadow-lg rounded-lg p-6 overflow-y-auto">
         <h1 className="text-xl font-semibold mb-4">Personal Details</h1>
@@ -118,6 +133,7 @@ const JobDescription: React.FC = () => {
               companyName={companyName}
               hiringManager={hiringManager}
               letterDetails={letterDetails}
+              disabled={!allFormFilled}
             />
           </div>
         </form>
@@ -135,34 +151,36 @@ const JobDescription: React.FC = () => {
           style={{ maxWidth: "100%", maxHeight: "calc(100vh - 48px)" }}
         >
           {/* The letter preview */}
+         
           <div className="text-xs lg:text-sm leading-5 lg:leading-6">
-            {name && (
-              <p className="text-right mb-4">
-                {name}
-                <br />
-                {address}
-                <br />
-                {email}
-                <br />
-                {phone}
-              </p>
-            )}
-            {hiringManager && companyName && (
-              <p className="mb-4">
-                {hiringManager} <br />
-                {companyName} <br />
-              </p>
-            )}
-            {jobTitle && (
-              <p className="mb-4">RE: applying for the role as {jobTitle}</p>
-            )}
-            {hiringManager && <p className="mb-4">Dear {hiringManager},</p>}
-            {letterDetails && (
-              <p className="mb-4 whitespace-pre-line">{letterDetails}</p>
-            )}
-            {(name || letterDetails) && <p className="mt-6">Sincerely,</p>}
-            {name && <p>{name}</p>}
-          </div>
+          {name && (
+            <p className="text-right mb-4">
+              {name}
+              <br />
+              {address}
+              <br />
+              {email}
+              <br />
+              {phone}
+            </p>
+          )}
+          {hiringManager && companyName && (
+            <p className="mb-4">
+              {hiringManager} <br />
+              {companyName} <br />
+            </p>
+          )}
+          {jobTitle && (
+            <p className="mb-4">RE: applying for the role as {jobTitle}</p>
+          )}
+          {hiringManager && <p className="mb-4">Dear {hiringManager},</p>}
+          {letterDetails && (
+            <p className="mb-4 whitespace-pre-line">{letterDetails}</p>
+          )}
+          {(name || letterDetails) && <p className="mt-6">Sincerely,</p>}
+          {name && <p>{name}</p>}
+        </div>
+         
         </div>
       </div>
     </div>

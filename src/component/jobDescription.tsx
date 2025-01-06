@@ -10,10 +10,7 @@ const JobDescription: React.FC = () => {
   const [companyName, setCompanyName] = useState<string>("");
   const [hiringManager, setHiringManager] = useState<string>("");
   const [letterDetails, setLetterDetails] = useState<string>("");
-  const [preview, setPreview] = useState<boolean>(false);
-  const togglepreview = ()=>{
-    setPreview(!preview);
-  }
+  
 
   const allFormFilled =
     name.trim() &&

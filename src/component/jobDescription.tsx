@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DownloadLetter from "../services/downloadLetter";
+import Livepreview from "./livepreview";
 
 const JobDescription: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -10,7 +11,8 @@ const JobDescription: React.FC = () => {
   const [companyName, setCompanyName] = useState<string>("");
   const [hiringManager, setHiringManager] = useState<string>("");
   const [letterDetails, setLetterDetails] = useState<string>("");
-  
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [showDownloadButton, setDownloadButton] = useState<boolean>(false);
 
   const allFormFilled =
     name.trim() &&
@@ -24,7 +26,6 @@ const JobDescription: React.FC = () => {
 
   return (
     <div className="flex flex-col lg:flex-row h-full min-h-screen bg-gray-200">
-      
       {/* Form Section */}
       <div className="flex-1 bg-white shadow-lg rounded-lg p-6 overflow-y-auto">
         <h1 className="text-xl font-semibold mb-4">Personal Details</h1>
@@ -122,62 +123,97 @@ const JobDescription: React.FC = () => {
             />
           </div>
           <div className="p-4">
-            <DownloadLetter
-              name={name}
-              address={address}
-              email={email}
-              phone={phone}
-              companyName={companyName}
-              hiringManager={hiringManager}
-              letterDetails={letterDetails}
-              disabled={!allFormFilled}
-            />
+            {showDownloadButton && (
+              <DownloadLetter
+                name={name}
+                address={address}
+                email={email}
+                phone={phone}
+                companyName={companyName}
+                hiringManager={hiringManager}
+                letterDetails={letterDetails}
+                disabled={!allFormFilled}
+              />
+            )}
           </div>
         </form>
       </div>
 
-      {/* Preview Section */}
-      <div className="flex-1 flex flex-col justify-center items-center bg-gray-300 p-4">
-        {/* Header */}
+      {/* Live Preview Button (Only visible on small screens) */}
+      {!showPreview && (
+        <button
+          onClick={() => {
+            setShowPreview(true); // Toggle for showing the preview and hiding the button
+            setDownloadButton(true); // Show download button
+          }}
+          className="sm:block lg:hidden fixed bottom-4 right-4 z-40 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl focus:outline-none"
+        >
+          Live Preview
+        </button>
+      )}
+
+      {/* Live Preview Modal (Only on small screens) */}
+      {showPreview && (
+        <Livepreview
+          name={name}
+          address={address}
+          email={email}
+          companyName={companyName}
+          hiringManager={hiringManager}
+          letterDetails={letterDetails}
+          phone={phone}
+          jobtitle={jobTitle}
+          closeModal={() => {
+            setShowPreview(false);
+            setDownloadButton(false); // Hide the download button again after closing
+          }}
+        />
+      )}
+
+      {/* Live Preview Section for Large Screens (Right Side) */}
+      <div className="hidden lg:block flex-1 flex flex-col justify-center items-center bg-gray-300 p-4">
         <h2 className="text-lg font-bold text-gray-600 mb-4 text-center">
           Live Preview
         </h2>
-
         <div
-          className="w-[320px] h-[500px] lg:w-[400px] lg:h-[600px] bg-white shadow-lg rounded-lg p-6 overflow-y-auto"
-          style={{ maxWidth: "100%", maxHeight: "calc(100vh - 48px)" }}
+          className="w-[110mm] h-[170mm] bg-white shadow-lg rounded-lg p-6 overflow-y-auto"
+          style={{
+            maxWidth: "100%",
+            maxHeight: "calc(100vh - 48px)",
+            margin: "auto",
+            border: "1px solid #ccc",
+            boxSizing: "border-box",
+          }}
         >
-          {/* The letter preview */}
-         
-          <div className="text-xs lg:text-sm leading-5 lg:leading-6">
-          {name && (
-            <p className="text-right mb-4">
-              {name}
-              <br />
-              {address}
-              <br />
-              {email}
-              <br />
-              {phone}
-            </p>
-          )}
-          {hiringManager && companyName && (
-            <p className="mb-4">
-              {hiringManager} <br />
-              {companyName} <br />
-            </p>
-          )}
-          {jobTitle && (
-            <p className="mb-4">RE: applying for the role as {jobTitle}</p>
-          )}
-          {hiringManager && <p className="mb-4">Dear {hiringManager},</p>}
-          {letterDetails && (
-            <p className="mb-4 whitespace-pre-line">{letterDetails}</p>
-          )}
-          {(name || letterDetails) && <p className="mt-6">Sincerely,</p>}
-          {name && <p>{name}</p>}
-        </div>
-         
+          {/* Letter Preview Content */}
+          <div className="text-xs leading-6">
+            {name && (
+              <p className="text-right mb-4">
+                {name}
+                <br />
+                {address}
+                <br />
+                {email}
+                <br />
+                {phone}
+              </p>
+            )}
+            {hiringManager && companyName && (
+              <p className="mb-4">
+                {hiringManager} <br />
+                {companyName} <br />
+              </p>
+            )}
+            {jobTitle && (
+              <p className="mb-4">RE: applying for the role as {jobTitle}</p>
+            )}
+            {hiringManager && <p className="mb-4">Dear {hiringManager},</p>}
+            {letterDetails && (
+              <p className="mb-4 whitespace-pre-line">{letterDetails}</p>
+            )}
+            {(name || letterDetails) && <p className="mt-6">Sincerely,</p>}
+            {name && <p>{name}</p>}
+          </div>
         </div>
       </div>
     </div>
@@ -185,3 +221,4 @@ const JobDescription: React.FC = () => {
 };
 
 export default JobDescription;
+

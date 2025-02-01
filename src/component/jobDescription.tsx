@@ -122,20 +122,6 @@ const JobDescription: React.FC = () => {
               onChange={(e) => setLetterDetails(e.target.value)}
             />
           </div>
-          <div className="p-4">
-            {showDownloadButton && (
-              <DownloadLetter
-                name={name}
-                address={address}
-                email={email}
-                phone={phone}
-                companyName={companyName}
-                hiringManager={hiringManager}
-                letterDetails={letterDetails}
-                disabled={!allFormFilled}
-              />
-            )}
-          </div>
         </form>
       </div>
 
@@ -144,7 +130,7 @@ const JobDescription: React.FC = () => {
         <button
           onClick={() => {
             setShowPreview(true); // Toggle for showing the preview and hiding the button
-            setDownloadButton(true); // Show download button
+            setDownloadButton(true); // Show download button on small screens
           }}
           className="sm:block lg:hidden fixed bottom-4 right-4 z-40 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform transition-all hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-2xl focus:outline-none"
         >
@@ -216,9 +202,38 @@ const JobDescription: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Download Button for Large Screens */}
+      <div className="hidden lg:block fixed bottom-4 right-4 z-40">
+        <DownloadLetter
+          name={name}
+          address={address}
+          email={email}
+          phone={phone}
+          companyName={companyName}
+          hiringManager={hiringManager}
+          letterDetails={letterDetails}
+          disabled={!allFormFilled}
+        />
+      </div>
+
+      {/* Download Button for Small Screens (Conditionally rendered) */}
+      {showDownloadButton && (
+        <div className="fixed bottom-4 right-4 z-40 lg:hidden">
+          <DownloadLetter
+            name={name}
+            address={address}
+            email={email}
+            phone={phone}
+            companyName={companyName}
+            hiringManager={hiringManager}
+            letterDetails={letterDetails}
+            disabled={!allFormFilled}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 export default JobDescription;
-

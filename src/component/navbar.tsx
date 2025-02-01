@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
             Portfolio
           </a>
           <a
-            href="https://github.com/"
+            href="https://github.com/Mudrick44"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline text-sm"
